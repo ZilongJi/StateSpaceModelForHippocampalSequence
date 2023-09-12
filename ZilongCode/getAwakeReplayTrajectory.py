@@ -29,7 +29,7 @@ def main():
     is_w_track = (epoch_info.environment
                     .isin(['TrackA', 'TrackB', 'WTrackA', 'WTrackB']))
     
-    is_animal = epoch_info.index.isin(['bon', 'fra', 'gov', 'dud', 'con'], level='animal')
+    is_animal = epoch_info.index.isin(['bon', 'fra', 'gov', 'dud', 'con', 'dav', 'Cor', 'egy', 'cha'], level='animal')
 
     valid_epochs = (is_w_track &
                     (epoch_info.n_neurons > MIN_N_NEURONS) &
@@ -44,17 +44,7 @@ def main():
     #%%
     PROCESSED_DATA_DIR = '/home/zilong/Desktop/replay_trajectory_paper/Processed-Data'
     for epoch_key in tqdm(epoch_info[valid_epochs].index, desc='epochs'):
-        animal, day, epoch = epoch_key
-        
-        if animal == 'cha' and day == 3 and epoch == 2:
-            continue # skip this epoch because there is some error in the data will come back to this later
-        if animal == 'cha' and day == 3 and epoch == 4:
-            continue # skip this epoch because there is some error in the data will come back to this later
-        if animal == 'dud' and day == 3 and epoch == 2:
-            continue # skip this epoch because there is some error in the data will come back to this later
-        if animal == 'dud' and day == 3 and epoch == 4:
-            continue # skip this epoch because there is some error in the data will come back to this later
-                               
+        animal, day, epoch = epoch_key                 
         
         # Check if this file has already been run
         replay_info_filename = os.path.join(

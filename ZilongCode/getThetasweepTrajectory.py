@@ -12,7 +12,7 @@ def main():
     epoch_info = make_epochs_dataframe(ANIMALS)
     neuron_info = make_neuron_dataframe(ANIMALS)
     
-    euron_info = neuron_info.loc[
+    neuron_info = neuron_info.loc[
     (neuron_info.type == 'principal') &
     (neuron_info.numspikes > 100) &
     neuron_info.area.isin(_BRAIN_AREAS)]
@@ -27,34 +27,18 @@ def main():
     epoch_info = epoch_info.join(n_neurons)
     is_w_track = (epoch_info.environment
                     .isin(['TrackA', 'TrackB', 'WTrackA', 'WTrackB']))
-    is_animal = epoch_info.index.isin(['bon', 'fra', 'gov', 'dud', 'con'], level='animal')
+    is_animal = epoch_info.index.isin(['bon', 'fra', 'gov', 'dud', 'con', 'Cor', 'dav', 'egy', 'cha'], level='animal')
     
     valid_epochs = (is_w_track &
                     (epoch_info.n_neurons > MIN_N_NEURONS) &
-                    (epoch_info.exposure <= MAX_N_EXPOSURES) &
                     is_animal
                     )
-    
-    # #print epoch_info.n_neurons and epoch_info.exposure if it is is_w_track
-    # print(epoch_info.n_neurons)
-    # print(epoch_info.exposure)
-    # print(epoch_info.environment)
-
     
     #%%
     DATA_DIR = '/home/zilong/Desktop/replay_trajectory_paper/Processed-Data'
     for epoch_key in tqdm(epoch_info[valid_epochs].index, desc='epochs'):
         animal, day, epoch = epoch_key
-        
-        if animal == 'cha' and day == 3 and epoch == 2:
-            continue # skip this epoch because there is some error in the data will come back to this later
-        if animal == 'cha' and day == 3 and epoch == 4:
-            continue # skip this epoch because there is some error in the data will come back to this later
-        if animal == 'dud' and day == 3 and epoch == 2:
-                continue # skip this epoch because there is some error in the data will come back to this later
-        if animal == 'dud' and day == 3 and epoch == 4:
-            continue # skip this epoch because there is some error in the data will come back to this later
-                    
+              
         # Check if this file has already been run
         replay_info_filename = os.path.join(
             DATA_DIR,
